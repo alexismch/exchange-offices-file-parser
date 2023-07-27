@@ -1,15 +1,17 @@
 import {
    Column,
    Entity,
+   JoinColumn,
    ManyToOne,
    OneToMany,
    PrimaryGeneratedColumn,
+   Relation,
 } from 'typeorm';
 import { Rate } from './rate.entity';
 import { Country } from './country.entity';
 import { Exchange } from './exchange.entity';
 
-@Entity()
+@Entity({ name: 'exchange_offices' })
 export class ExchangeOffice {
    @PrimaryGeneratedColumn()
    id: number;
@@ -18,13 +20,14 @@ export class ExchangeOffice {
    name: string;
 
    @ManyToOne(() => Country, { nullable: false, cascade: true })
+   @JoinColumn({ name: 'country_code' })
    country: Country;
 
    @OneToMany(() => Exchange, (exchange) => exchange.exchangeOffice, {
       cascade: true,
    })
-   exchanges: Exchange[];
+   exchanges: Relation<Exchange[]>;
 
    @OneToMany(() => Rate, (rate) => rate.exchangeOffice, { cascade: true })
-   rates: Rate[];
+   rates: Relation<Rate[]>;
 }

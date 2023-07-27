@@ -1,13 +1,21 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+   Column,
+   Entity,
+   JoinColumn,
+   ManyToOne,
+   PrimaryGeneratedColumn,
+   Relation,
+} from 'typeorm';
 import { ExchangeOffice } from './exchange-office.entity';
 
-@Entity()
+@Entity({ name: 'exchanges' })
 export class Exchange {
    @PrimaryGeneratedColumn()
    id: number;
 
    @ManyToOne(() => ExchangeOffice, (office) => office.exchanges)
-   exchangeOffice: ExchangeOffice;
+   @JoinColumn({ name: 'exchange_office_id' })
+   exchangeOffice: Relation<ExchangeOffice>;
 
    @Column()
    from: string;
